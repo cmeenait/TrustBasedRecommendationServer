@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-modules id="moduleCoreId" project-version="2.0">
-  <wb-module deploy-name="RESTfulDemoApplication">
-    <property name="context-root" value="RESTfulDemoApplication"/>
+  <wb-module deploy-name="TrustBasedRecommendation">
+    <property name="context-root" value="TrustBasedRecommendation"/>
     <wb-resource deploy-path="/" source-path="src/main/webapp"/>
     <property name="java-output-path" value="/target/classes"/>
     <dependent-module archiveName="foursquare-api-1.0.2.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/fi/foyt/foursquare-api/1.0.2/foursquare-api-1.0.2.jar">
