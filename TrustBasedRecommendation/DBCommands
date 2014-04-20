@@ -1,0 +1,17 @@
+db.UserCollection.insert( {name : "umang" ,  email : "umang@gmail.com" , bookmarks : [ ] , friends : [ ] } );  // adding new user 
+
+ // adding friend to meena 
+
+db.UserCollection.update( { "_id" :  ObjectId("53536aab7704fe878ffba3d1") }, { $addToSet: { friends : "umang@gmail.com"  } } ); 
+
+
+ // adding trustscore to  a  friend of  meena 
+
+db.TrustScoreCollection.insert({"user" : "cmeena@gmail.com", "friend" : "umang@gmail.com", "category" : "house", "trustscore" : 5, "explicit" : "true"});
+
+
+
+//adding bookmark to meena 
+
+
+db.BookmarkCollection.insert({"email" : "cmeena@gmail.com", "name" : "tyfcc ", "location" : "san jose", "category" : "house", "stats" : "203 likes", "tried" : true, "status" : "Bad" } );

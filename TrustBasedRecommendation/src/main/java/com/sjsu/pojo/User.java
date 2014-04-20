@@ -1,20 +1,22 @@
 package com.sjsu.pojo;
 
+import java.util.List;
+
 public class User {
-	// public String id;
+	
 	public String name;
 	public String email;
 	public String city;
 	public int zip;
+	
+	public List<String>  friendsList;
 
-	public User()
-	{
-		
+	public User() {
+
 	}
-	/*
-	 * public String getId() { return id; } public void setId(String id) {
-	 * this.id = id; }
-	 */
+
+	
+
 	public String getName() {
 		return name;
 	}
@@ -46,6 +48,23 @@ public class User {
 	public void setZip(int zip) {
 		this.zip = zip;
 	}
+
+	public List<String> getFriendsList() {
+		return friendsList;
+	}
+
+	public void setFriendsList(List<String> friendsList) {
+		this.friendsList = friendsList;
+	}
 	
+	
+	
+	public String toString()
+	{
+		
+
+	
+		return   name + " "  + email + " " + city + " " + zip  + friendsList.get(0) ; 
+	}
 
 }
