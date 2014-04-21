@@ -21,7 +21,8 @@ import com.mongodb.WriteResult;
 import com.sjsu.pojo.Bookmark;
 import com.sjsu.pojo.TrustScore;
 import com.sjsu.pojo.User;
-import com.sjsu.pojo.UserBookmark;
+import com.sjsu.pojo.UserRecommendation;
+import com.sjsu.pojo.UserRecommendationAttributes;
 import com.sjsu.utilities.DatabaseConstants;
 
 public class MongoDBClient {
@@ -251,7 +252,7 @@ public class MongoDBClient {
 
 	public List<Bookmark> getBookmarksfromTopTrustedFriends(User user,
 			List<TrustScore> trustScoreList) {
-
+//TODO get status only liked 
 		List<String> categoryList = new ArrayList<String>();
 		List<String> FriendsList = new ArrayList<String>();
 		for (int i = 0; i < trustScoreList.size(); i++) {
@@ -294,8 +295,39 @@ public class MongoDBClient {
 		return bookmarksList ; 
 
 	}
+	
+	
+	
+	
+	
+public List<Bookmark>  getBookmarksfromUser(List<String> frndEmailList)
+{
+	//Todo get only status = liked 
+	DBCollection collection = getBookmarkCollection();
+	
+	List<Bookmark> bookmarksList = new ArrayList<Bookmark>();
+	BasicDBObject inQuery = new BasicDBObject();
 
-	public UserBookmark getAllBookmarkCategoryCountForUser(User user) {
+	inQuery.put("email", new BasicDBObject("$in", frndEmailList));
+	DBCursor cursor = collection.find(inQuery);
+	while(cursor.hasNext()) {
+		DBObject dbobj = cursor.next();
+		Bookmark bookmark = new Bookmark();
+
+		bookmark.setName(String.valueOf(dbobj.get("name")));
+		bookmark.setLocation((String) dbobj.get("location"));
+		bookmark.setCategory((String) dbobj.get("category"));
+		bookmark.setStats((String) dbobj.get("status"));
+		System.out.println(bookmark.toString());
+		bookmarksList.add(bookmark);
+	}
+	
+	return bookmarksList ; 
+}
+	
+	
+
+	public UserRecommendationAttributes getAllBookmarkCategoryCountForUser(User user) {
 		
 		
 		
@@ -325,10 +357,10 @@ public class MongoDBClient {
 				group);
 		
 		
-		System.out.println(output.toString());
+
 		categoryList = new ArrayList<String>();
 		
-		UserBookmark  userBookmark = new  UserBookmark(); 
+		UserRecommendationAttributes  userBookmark = new  UserRecommendationAttributes(); 
 		userBookmark.setUserEmailId(user.getEmail());
 		HashMap<String, Integer> categoryCount = new HashMap<String, Integer>();
 		for (DBObject obj : output.results()) {
@@ -339,7 +371,7 @@ public class MongoDBClient {
 			categoryCount.put(id, total);
 		}
 		
-		userBookmark.setCategoryCount(categoryCount);
+		userBookmark.setCategoryCountMap(categoryCount);
 		return userBookmark;
 
 	}
@@ -366,7 +398,7 @@ public class MongoDBClient {
 			
 			user.setEmail((String) dbobj.get("email"));
 			user.setFriendsList((List<String>) dbobj.get("friends"));
-			System.out.println (user.toString()  ) ; 
+			
 			users.add(user);
 		}
 
@@ -374,4 +406,94 @@ public class MongoDBClient {
 		return users;
 	}
 
+	
+	
+	
+	public void populateUserRecommendation(
+			List<UserRecommendation> userRecommendationList) throws IOException {
+		DBCollection collection = getRecommendationCollection();
+		
+		for(int i = 0 ; i <userRecommendationList.size() ; i++  )
+		{
+		BasicDBObject document = new BasicDBObject();
+		document.append("email", userRecommendationList.get(i).getEmail());
+		
+		List<Bookmark>  bookmarksList = userRecommendationList.get(i).getBookmarksList() ;
+		
+		List<BasicDBObject> bookmarkdocList = new ArrayList<BasicDBObject>();
+		
+		for(int k =0 ; k <bookmarksList.size() ;k++ )
+		{
+		Bookmark tempBookmark = bookmarksList.get(k);
+		
+		BasicDBObject bookmarkdoc = new BasicDBObject();
+		
+		bookmarkdoc.append("name " , tempBookmark.getName() ) ;
+		bookmarkdoc.append("location " ,tempBookmark.getLocation());
+		bookmarkdoc.append("stats " ,tempBookmark.getStats());
+		bookmarkdoc.append("category " ,tempBookmark.getCategory());
+		bookmarkdocList.add(bookmarkdoc);
+		
+		}
+		document.append("bookmarks",   bookmarkdocList ) ;
+
+		
+		WriteResult result = collection.insert(document);
+		String error = result.getError();
+		if (error != null) {
+			throw new IOException("Error adding the user with email id "
+					+ userRecommendationList.get(i).getEmail()+ error);
+		}
+		
+		}
+		
+	}
+
+	private DBCollection getRecommendationCollection() {
+		DB db = mongoClient.getDB(DatabaseConstants.DATABASE_NAME);
+		DBCollection collection = db
+				.getCollection(DatabaseConstants.RECOMMENDATION_TABLE_NAME);
+		return collection;
+	}
+
+	
+	
+
+	
+	
+public List<Bookmark>  getRecommendationsforUser(User user)
+{
+	//Todo get only status = liked 
+	DBCollection collection = getRecommendationCollection();
+	
+	List<Bookmark> bookmarksList = new ArrayList<Bookmark>();
+	BasicDBObject inQuery = new BasicDBObject();
+
+	inQuery.put("email",user.getEmail());
+	
+	
+	DBObject fields = new BasicDBObject("bookmarks", 1);
+	
+	DBCursor cursor = collection.find(inQuery,  fields );
+	while(cursor.hasNext()) {
+		DBObject dbobj = cursor.next();
+		bookmarksList  = (List<Bookmark>) dbobj.get("bookmarks"); 
+		/*Bookmark bookmark = new Bookmark();
+
+		bookmark.setName(String.valueOf(dbobj.get("name")));
+		bookmark.setLocation((String) dbobj.get("location"));
+		bookmark.setCategory((String) dbobj.get("category"));
+		bookmark.setStats((String) dbobj.get("status"));
+		System.out.println(bookmark.toString());
+		bookmarksList.add(bookmark); */
+	}
+	
+	for (int i = 0 ; i <bookmarksList.size() ; i++ )
+	{
+		Bookmark bookmark = (Bookmark)bookmarksList.get(i);
+		System.out.println(bookmark.toString()) ; 
+	}
+	
+	return bookmarksList ; 
+}
 }

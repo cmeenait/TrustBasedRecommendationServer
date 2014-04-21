@@ -10,9 +10,11 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.sjsu.pojo.Bookmark;
 import com.sjsu.pojo.FourSquareVenue;
 import com.sjsu.pojo.TrustScore;
 import com.sjsu.pojo.User;
+import com.sjsu.pojo.UserRecommendation;
 import com.sjsu.restservices.FourSquareService;
 
 public class MongoDBClientTest {
@@ -82,6 +84,28 @@ public class MongoDBClientTest {
 	}
 	
 	
+
+	@Test
+	public void getBookmarksfromUserTest() {
+
+		try {
+			MongoDBClient mongoClient = new MongoDBClient();
+List<String>  frndEmailList = new ArrayList<String>();
+frndEmailList.add("som@gmail.com");
+frndEmailList.add("cmeena@gmail.com");
+
+			
+			mongoClient.getBookmarksfromUser(frndEmailList);
+
+		} catch (UnknownHostException e) {
+			assertTrue(false);
+			e.printStackTrace();
+		} catch (IOException e) {
+			// assertTrue(false);
+			e.printStackTrace();
+		}
+
+	}
 	
 	
 	
@@ -241,6 +265,71 @@ public class MongoDBClientTest {
 	}
 	
 	
+	@Test
+	public void populateUserRecommendationTest() {
+		try {
+			
+			MongoDBClient mongoClient = new MongoDBClient();
+			
+			List<UserRecommendation> userRecommendationList = new ArrayList<UserRecommendation>();
+			UserRecommendation userRecommendation = new UserRecommendation();
+			userRecommendation.setEmail("cmeena@gmail.com");
+			Bookmark bookmark = new Bookmark();
+			bookmark.setName( "heel");
+			bookmark.setLocation("rtet");
+			bookmark.setStats("tr");
+			bookmark.setTried(true);
+			
+			
+			
+			Bookmark bookmark1 = new Bookmark();
+			bookmark1.setName( "yogurt");
+			bookmark1.setLocation("eeeeeee");
+			bookmark1.setStats("eeeee");
+			bookmark1.setTried(true);
+			
+			List<Bookmark>  bookmarkList = new ArrayList<Bookmark>();
+			bookmarkList.add(bookmark);
+			bookmarkList.add(bookmark1);
+			
+			userRecommendation.setBookmarksList(bookmarkList);
+			
+			userRecommendationList.add(userRecommendation);
+			
+			mongoClient.populateUserRecommendation(userRecommendationList);
+
+		} catch (UnknownHostException e) {
+			assertTrue(false);
+			e.printStackTrace();
+		} catch (IOException e) {
+			assertTrue(false);
+			e.printStackTrace();
+		}
+
+	}
+	
+	
+
+	@Test
+	public void getRecommendationforUserTest() {
+
+		try {
+			MongoDBClient mongoClient = new MongoDBClient();
+User user = new User() ;
+user.setEmail("cmeena@gmail.com");
+
+			
+			mongoClient.getRecommendationsforUser(user);
+
+		} catch (UnknownHostException e) {
+			assertTrue(false);
+			e.printStackTrace();
+		} catch (IOException e) {
+			// assertTrue(false);
+			e.printStackTrace();
+		}
+
+	}
 
 
 

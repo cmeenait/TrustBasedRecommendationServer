@@ -13,5 +13,9 @@ public class DatabaseConstants {
 	
 	
 	public static final String BOOKMARK_TABLE_NAME = "BookmarkCollection";
+	
+	
+	
+	public static final String RECOMMENDATION_TABLE_NAME = "RecommendationCollection";
 
 }

@@ -31,7 +31,7 @@ public class CosineSimilarity {
 	        magnitude1 = Math.sqrt(magnitude1);//sqrt(a^2)
 	        magnitude2 = Math.sqrt(magnitude2);//sqrt(b^2)
 
-	        if (magnitude1 != 0.0 | magnitude2 != 0.0)
+	        if (magnitude1 != 0.0 & magnitude2 != 0.0)
 	        {
 	            cosineSimilarity = dotProduct / (magnitude1 * magnitude2);
 	        } 

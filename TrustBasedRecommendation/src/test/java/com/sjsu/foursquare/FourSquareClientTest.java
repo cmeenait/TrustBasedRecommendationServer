@@ -106,5 +106,10 @@ public class FourSquareClientTest {
 		}
 
 	}
+	
+	
+	
+	
+	
 
 }

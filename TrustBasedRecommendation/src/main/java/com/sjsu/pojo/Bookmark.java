@@ -1,6 +1,8 @@
 package com.sjsu.pojo;
 
-public class Bookmark {
+import java.io.Serializable;
+
+public class Bookmark implements Serializable{
 	
 	public String name ;
 	 public String  location ;
@@ -8,6 +10,12 @@ public class Bookmark {
 	 public String stats ;
 	 public Boolean tried ;
 	 public String status;
+	 
+	 public Bookmark() {
+
+		}
+	 
+	 
 	public String getName() {
 		return name;
 	}
