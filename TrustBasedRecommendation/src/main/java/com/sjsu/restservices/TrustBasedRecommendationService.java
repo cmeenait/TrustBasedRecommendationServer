@@ -88,5 +88,38 @@ public class TrustBasedRecommendationService {
 		return Response.status(200).entity(successMessage).build();
 
 	}
+	
+	
+	
+	
+	
+	
+	
+
+	@GET
+	@Path("/getnewuserrecommendation")
+	@Consumes("application/json")
+	@Produces("application/json")
+	public Response getNewUserRecommendation(User user , List<String>  categoryList) {
+		String failedMessage = "failed to get popular  recommendation";
+		String successMessage = "got popular recommentation  ";
+		try {
+			MongoDBClient mongoClient = new MongoDBClient();
+			
+			List<Bookmark> bookmarksList = mongoClient.getPopularRecommendationinCategory(  categoryList);
+			
+			
+		
+		
+		} catch (UnknownHostException e) {
+			return Response.status(400).entity(failedMessage).build();
+		} catch (IOException e) {
+			return Response.status(400).entity(failedMessage).build();
+		}
+
+		// 200 denotes it is success
+		return Response.status(200).entity(successMessage).build();
+
+	}
 
 }

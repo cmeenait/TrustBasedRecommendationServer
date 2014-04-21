@@ -496,4 +496,41 @@ public List<Bookmark>  getRecommendationsforUser(User user)
 	
 	return bookmarksList ; 
 }
+
+public List<Bookmark> getPopularRecommendationinCategory(
+		List<String> categoryList) {
+	DBCollection collection = getBookmarkCollection();
+	
+	List<Bookmark> bookmarksList = new ArrayList<Bookmark>();
+	BasicDBObject inQuery = new BasicDBObject();
+
+	inQuery.put("category", new BasicDBObject("$in", categoryList));
+	
+	
+	
+	
+	
+
+	BasicDBObject orderBy = new BasicDBObject() ;
+	orderBy.put("stats", -1);
+	
+	DBCursor cursor = collection.find(inQuery).sort(orderBy);
+
+	
+	while(cursor.hasNext()) {
+		DBObject dbobj = cursor.next();
+		Bookmark bookmark = new Bookmark();
+
+		bookmark.setName(String.valueOf(dbobj.get("name")));
+		bookmark.setLocation((String) dbobj.get("location"));
+		bookmark.setCategory((String) dbobj.get("category"));
+		bookmark.setStats((String) dbobj.get("stats"));
+		bookmark.setStatus((String) dbobj.get("status"));
+		bookmark.setTried((Boolean) dbobj.get("tried"));
+		System.out.println(bookmark.toString());
+		bookmarksList.add(bookmark);
+	}
+	
+	return bookmarksList ; 
+}
 }
