@@ -72,11 +72,25 @@ public class TrustBasedRecommendationService {
 			List<Bookmark> bookmarksList = mongoClient.getRecommendationsforUser(user);
 			
 			
+			
+			if(bookmarksList.size() == 0  )
+			{
+				
+				 bookmarksList = mongoClient.getPopularRecommendationinCategory();
+				
+				
+				
+				
+			}
+			
 			for (int i = 0 ; i <bookmarksList.size() ; i++ )
 			{
 				Bookmark bookmark = (Bookmark)bookmarksList.get(i);
 				System.out.println(bookmark.toString()) ; 
 			}
+			
+			
+		
 		
 		} catch (UnknownHostException e) {
 			return Response.status(400).entity(failedMessage).build();

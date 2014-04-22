@@ -311,5 +311,34 @@ public class MongoDBClientTest {
 		}
 
 	}
+	
+	
+	
+	
+	
+	@Test
+	public void findUserinRecommendationTest() {
+
+		try {
+			MongoDBClient mongoClient = new MongoDBClient();
+			
+
+		List<String>	 users = mongoClient.findUserinRecommendation() ;
+		
+		
+		for(int i =0 ; i <users.size() ; i++)
+		{
+			System.out.println(users.get(i));
+		}
+
+		} catch (UnknownHostException e) {
+			assertTrue(false);
+			e.printStackTrace();
+		} catch (IOException e) {
+			// assertTrue(false);
+			e.printStackTrace();
+		}
+
+	}
 
 }

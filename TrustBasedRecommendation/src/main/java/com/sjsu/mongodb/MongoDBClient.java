@@ -205,7 +205,7 @@ public class MongoDBClient {
 			DBObject sort = new BasicDBObject("$sort", new BasicDBObject(
 					"total", -1));
 
-			DBObject limit = new BasicDBObject("$limit", 3);
+			DBObject limit = new BasicDBObject("$limit", 10);
 
 			AggregationOutput output = collection.aggregate(match, project,
 					group, sort, limit);
@@ -287,7 +287,9 @@ public class MongoDBClient {
 			bookmark.setName(String.valueOf(dbobj.get("name")));
 			bookmark.setLocation((String) dbobj.get("location"));
 			bookmark.setCategory((String) dbobj.get("category"));
-			bookmark.setStats((String) dbobj.get("status"));
+			bookmark.setStats((String) dbobj.get("stats"));
+			bookmark.setStatus((String) dbobj.get("status"));
+			bookmark.setTried((Boolean) dbobj.get("tried"));
 			System.out.println(bookmark.toString());
 			bookmarksList.add(bookmark);
 		}
@@ -317,7 +319,9 @@ public List<Bookmark>  getBookmarksfromUser(List<String> frndEmailList)
 		bookmark.setName(String.valueOf(dbobj.get("name")));
 		bookmark.setLocation((String) dbobj.get("location"));
 		bookmark.setCategory((String) dbobj.get("category"));
-		bookmark.setStats((String) dbobj.get("status"));
+		bookmark.setStats((String) dbobj.get("stats"));
+		bookmark.setStatus((String) dbobj.get("status"));
+		bookmark.setTried((Boolean) dbobj.get("tried"));
 		System.out.println(bookmark.toString());
 		bookmarksList.add(bookmark);
 	}
@@ -428,10 +432,13 @@ public List<Bookmark>  getBookmarksfromUser(List<String> frndEmailList)
 		
 		BasicDBObject bookmarkdoc = new BasicDBObject();
 		
+	
 		bookmarkdoc.append("name " , tempBookmark.getName() ) ;
 		bookmarkdoc.append("location " ,tempBookmark.getLocation());
 		bookmarkdoc.append("stats " ,tempBookmark.getStats());
 		bookmarkdoc.append("category " ,tempBookmark.getCategory());
+		bookmarkdoc.append("tried", tempBookmark.getTried());
+		bookmarkdoc.append("status", tempBookmark.getStatus());
 		bookmarkdocList.add(bookmarkdoc);
 		
 		}
@@ -532,5 +539,64 @@ public List<Bookmark> getPopularRecommendationinCategory(
 	}
 	
 	return bookmarksList ; 
+}
+
+
+
+
+public List<Bookmark> getPopularRecommendationinCategory() {
+	DBCollection collection = getBookmarkCollection();
+	
+	List<Bookmark> bookmarksList = new ArrayList<Bookmark>();
+	
+	
+	
+	
+	
+	
+
+	BasicDBObject orderBy = new BasicDBObject() ;
+	orderBy.put("stats", -1);
+	
+	DBCursor cursor = collection.find().sort(orderBy);
+
+	
+	while(cursor.hasNext()) {
+		DBObject dbobj = cursor.next();
+		Bookmark bookmark = new Bookmark();
+
+		bookmark.setName(String.valueOf(dbobj.get("name")));
+		bookmark.setLocation((String) dbobj.get("location"));
+		bookmark.setCategory((String) dbobj.get("category"));
+		bookmark.setStats((String) dbobj.get("stats"));
+		bookmark.setStatus((String) dbobj.get("status"));
+		bookmark.setTried((Boolean) dbobj.get("tried"));
+		System.out.println(bookmark.toString());
+		bookmarksList.add(bookmark);
+	}
+	
+	return bookmarksList ; 
+}
+
+public List<String> findUserinRecommendation() {
+	
+	DBCollection collection = getRecommendationCollection();
+	
+	BasicDBObject allQuery = new BasicDBObject();
+	BasicDBObject fields = new BasicDBObject();
+	fields.put("email", 1);
+	
+	DBCursor cursor = collection.find(allQuery , fields);
+	
+	List<String>  users = new ArrayList<String>();
+	
+	
+	while (cursor.hasNext()) {
+		DBObject dbobject = cursor.next();
+		users.add((String) dbobject.get("email")) ;
+	
+	}
+	return users;
+	
 }
 }
