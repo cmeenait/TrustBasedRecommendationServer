@@ -14,4 +14,14 @@ db.TrustScoreCollection.insert({"user" : "cmeena@gmail.com", "friend" : "umang@g
 //adding bookmark to meena 
 
 
-db.BookmarkCollection.insert({"email" : "cmeena@gmail.com", "name" : "tyfcc ", "location" : "san jose", "category" : "house", "stats" : "203 likes", "tried" : true, "status" : "Bad" } );
+db.BookmarkCollection.insert();
+
+
+
+
+
+db.BookmarkCollection.insert({ "email" : "cmeena@gmail.com", "name" : "frozen", "location" : "san jose", "category" : "movies", "stats" : "203 likes", "tried" : true, "status" : "Bad" });
+db.BookmarkCollection.insert({  "email" : "som@gmail.com", "name" : "batman", "location" : "san jose", "category" : "movies", "stats" : "203 likes", "tried" : true, "status" : "Bad" });
+db.BookmarkCollection.insert({  "email" : "som@gmail.com", "name" : "peacock", "location" : "san jose", "category" : "restaurant", "stats" : "203 likes", "tried" : true, "status" : "Bad" });
+db.BookmarkCollection.insert({"_id" : ObjectId("53559cc1000c46660991b9a5"), "email" : "cmeena@gmail.com", "name" : "panera", "location" : "san jose", "category" : "house", "stats" : "102 likes", "tried" : true, "status" : "Bad" });
+db.BookmarkCollection.insert({  "email" : "cmeena@gmail.com", "name" : "panera", "location" : "san jose", "category" : "house", "stats" : "1 likes", "tried" : true, "status" : "Bad" });

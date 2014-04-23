@@ -2,6 +2,7 @@ package com.sjsu.restservices;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -19,7 +20,7 @@ import com.sjsu.pojo.User;
 @Path("/trustbasedtecommendationservice")
 public class TrustBasedRecommendationService {
 
-	@GET
+	/*@GET
 	@Path("/getexplicittrustrecommendation")
 	@Consumes("application/json")
 	@Produces("application/json")
@@ -53,23 +54,27 @@ public class TrustBasedRecommendationService {
 	
 	
 	
-	
+	*/
 	
 	
 	
 	
 
 	@GET
-	@Path("/getimplicittrustrecommendation")
+	@Path("/gettrustrecommendation")
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response getimplicitRecommendation(User user) {
-		String failedMessage = "failed to get implicit recommendation";
-		String successMessage = "got implicit recommentation  ";
+	public List<Bookmark> getRecommendation(User user  ) {
+		
+		
+		/*User user = new User() ;
+		user.setEmail("cmeena@gmail.com");
+		*/
+		List<Bookmark> bookmarksList =  new ArrayList<Bookmark>()  ;
 		try {
 			MongoDBClient mongoClient = new MongoDBClient();
 			
-			List<Bookmark> bookmarksList = mongoClient.getRecommendationsforUser(user);
+			 bookmarksList = mongoClient.getRecommendationsforUser(user);
 			
 			
 			
@@ -92,14 +97,10 @@ public class TrustBasedRecommendationService {
 			
 		
 		
-		} catch (UnknownHostException e) {
-			return Response.status(400).entity(failedMessage).build();
-		} catch (IOException e) {
-			return Response.status(400).entity(failedMessage).build();
+		} catch (Exception e) {
+		
 		}
-
-		// 200 denotes it is success
-		return Response.status(200).entity(successMessage).build();
+		return bookmarksList;
 
 	}
 	
@@ -110,7 +111,7 @@ public class TrustBasedRecommendationService {
 	
 	
 
-	@GET
+	/*@GET
 	@Path("/getnewuserrecommendation")
 	@Consumes("application/json")
 	@Produces("application/json")
@@ -134,6 +135,6 @@ public class TrustBasedRecommendationService {
 		// 200 denotes it is success
 		return Response.status(200).entity(successMessage).build();
 
-	}
+	}*/
 
 }

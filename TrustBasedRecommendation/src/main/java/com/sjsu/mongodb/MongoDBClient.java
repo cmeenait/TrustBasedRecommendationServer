@@ -433,10 +433,10 @@ public List<Bookmark>  getBookmarksfromUser(List<String> frndEmailList)
 		BasicDBObject bookmarkdoc = new BasicDBObject();
 		
 	
-		bookmarkdoc.append("name " , tempBookmark.getName() ) ;
-		bookmarkdoc.append("location " ,tempBookmark.getLocation());
-		bookmarkdoc.append("stats " ,tempBookmark.getStats());
-		bookmarkdoc.append("category " ,tempBookmark.getCategory());
+		bookmarkdoc.append("name" , tempBookmark.getName() ) ;
+		bookmarkdoc.append("location" ,tempBookmark.getLocation());
+		bookmarkdoc.append("stats" ,tempBookmark.getStats());
+		bookmarkdoc.append("category" ,tempBookmark.getCategory());
 		bookmarkdoc.append("tried", tempBookmark.getTried());
 		bookmarkdoc.append("status", tempBookmark.getStatus());
 		bookmarkdocList.add(bookmarkdoc);
@@ -484,15 +484,28 @@ public List<Bookmark>  getRecommendationsforUser(User user)
 	DBCursor cursor = collection.find(inQuery,  fields );
 	while(cursor.hasNext()) {
 		DBObject dbobj = cursor.next();
-		bookmarksList  = (List<Bookmark>) dbobj.get("bookmarks"); 
-		/*Bookmark bookmark = new Bookmark();
-
-		bookmark.setName(String.valueOf(dbobj.get("name")));
-		bookmark.setLocation((String) dbobj.get("location"));
-		bookmark.setCategory((String) dbobj.get("category"));
-		bookmark.setStats((String) dbobj.get("status"));
-		System.out.println(bookmark.toString());
-		bookmarksList.add(bookmark); */
+		List<DBObject>  dbObjectList  = (List<DBObject>) dbobj.get("bookmarks"); 
+		
+		System.out.println(dbObjectList);
+		
+		for(int i = 0 ; i <dbObjectList.size() ; i++)
+		{
+			DBObject tempdbobj  = dbObjectList.get(i) ;
+			Bookmark bookmark = new Bookmark();
+			
+			bookmark.setName(String.valueOf(tempdbobj.get("name")));
+			bookmark.setLocation((String) tempdbobj.get("location"));
+			bookmark.setCategory((String) tempdbobj.get("category"));
+			bookmark.setStats((String) tempdbobj.get("stats"));
+			bookmark.setStatus((String) tempdbobj.get("status"));
+			bookmark.setTried((Boolean) tempdbobj.get("tried"));
+			System.out.println(bookmark.toString());
+			bookmarksList.add(bookmark);
+		
+		}
+	
+		
+		
 	}
 	
 	for (int i = 0 ; i <bookmarksList.size() ; i++ )
