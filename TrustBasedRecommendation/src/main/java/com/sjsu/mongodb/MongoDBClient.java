@@ -47,8 +47,12 @@ public class MongoDBClient {
 	}
 
 	public void addUser(User user) throws IOException {
+		
+		System.out.println(" inside mongodb");
 
 		validateUser(user.getEmail());
+		
+		System.out.println(" after validating the mongo client  user email addres ");
 		BasicDBObject document = new BasicDBObject();
 		document.put("email", user.getEmail());
 		document.put("city", user.getCity());
@@ -57,6 +61,8 @@ public class MongoDBClient {
 
 		DBCollection collection = getUserCollection();
 		WriteResult result = collection.insert(document);
+		
+		System.out.println(" after inserting user object  ");
 		String error = result.getError();
 		if (error != null) {
 			throw new IOException("Error adding the user with email id "
@@ -563,11 +569,6 @@ public List<Bookmark> getPopularRecommendationinCategory() {
 	List<Bookmark> bookmarksList = new ArrayList<Bookmark>();
 	
 	
-	
-	
-	
-	
-
 	BasicDBObject orderBy = new BasicDBObject() ;
 	orderBy.put("stats", -1);
 	

@@ -21,12 +21,15 @@ public class RestService {
 	@Consumes("application/json")
 	public Response addUser(User user)
 	{
+		System.out.println("Inside add user ");
 		String failedMessage = "failed to add user";
 		String successMessage = "user successfully added";
 		
 		try {
 			MongoDBClient mongoClient = new MongoDBClient();
 			mongoClient.addUser(user);
+			
+			System.out.println(" after mongo client ");
 		} catch (UnknownHostException e) {
 			return Response.status(400).entity(failedMessage).build();
 		} catch (IOException e) {

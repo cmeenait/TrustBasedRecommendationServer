@@ -9,12 +9,53 @@ import org.junit.Test;
 
 import fi.foyt.foursquare.api.FoursquareApiException;
 import fi.foyt.foursquare.api.Result;
+import fi.foyt.foursquare.api.entities.Category;
 import fi.foyt.foursquare.api.entities.CompactVenue;
 import fi.foyt.foursquare.api.entities.VenuesSearchResult;
 import fi.foyt.foursquare.api.io.Response;
 
 public class FourSquareClientTest {
 
+	
+	@Test
+	public void getCategoriesTest() {
+		String clientID = "FQ2N5PKZRPQVZFWLP3MC3H43O5N2YUCTPYFGS3W503OGOGQP";
+		String clientSecret = "42ZECLAWYZOBY5W1EOSV2PFUJZCRCXFTOZN0ITSGEZAB4YDY";
+		String callBackURL = "http://www.testapp.com";
+
+		FourSquareClient fourSquareClient = new FourSquareClient(clientID, clientSecret, callBackURL);
+
+		try {
+			Result<Category[]> resultArray = fourSquareClient.getCategories();
+			if (resultArray.getMeta().getCode() == 200) {
+				// if query was ok we can finally we do something with the data
+				Category[]   categoryArray = resultArray.getResult();
+				for(int i = 0 ; i <categoryArray.length ; i++)
+				{
+					System.out.println(categoryArray[i].getName());
+					//System.out.println(categoryArray[i].getPluralName() );
+				}
+			}
+
+
+			else {
+				System.out.println("Error occured: ");
+				System.out.println("  code: " + resultArray.getMeta().getCode());
+				System.out.println("  type: " + resultArray.getMeta().getErrorType());
+				System.out.println("  detail: " + resultArray.getMeta().getErrorDetail());
+			}
+
+		} catch (FoursquareApiException e) {
+
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	
+	
+	
 	@Test
 	public void nearVenueTest() {
 		String clientID = "FQ2N5PKZRPQVZFWLP3MC3H43O5N2YUCTPYFGS3W503OGOGQP";

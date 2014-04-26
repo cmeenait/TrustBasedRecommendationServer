@@ -7,6 +7,7 @@ import java.util.Map;
 import fi.foyt.foursquare.api.FoursquareApi;
 import fi.foyt.foursquare.api.FoursquareApiException;
 import fi.foyt.foursquare.api.Result;
+import fi.foyt.foursquare.api.entities.Category;
 import fi.foyt.foursquare.api.entities.VenuesSearchResult;
 
 public class FourSquareClient {
@@ -113,6 +114,16 @@ public class FourSquareClient {
 	public Result<VenuesSearchResult> getVenueSearch(Map<String, String> params) throws FoursquareApiException {
 		FoursquareApi foursquareApi = new FoursquareApi(clientId, clientSecret, callBackURL);
 		Result<VenuesSearchResult> result = foursquareApi.venuesSearch(params);
+		return result;
+	}
+	
+	
+	
+	
+	public Result<Category[]> getCategories() throws FoursquareApiException {
+		FoursquareApi foursquareApi = new FoursquareApi(clientId, clientSecret, callBackURL);
+		Result<Category[]> result = foursquareApi.venuesCategories();
+		
 		return result;
 	}
 }
